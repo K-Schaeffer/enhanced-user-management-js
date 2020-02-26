@@ -201,34 +201,20 @@ class UserController {
 
         //let users = User.getUsersStorage();
 
-        let ajax = new XMLHttpRequest(); // Creating XHR
+        HttpRequest.get('/users')
+            .then(data => {
+                data.users.forEach(dataUser => { // Taking users from JSON object
 
-        ajax.open('GET', '/users'); // Calling the get from /users
+                    let user = new User();
 
-        ajax.onload = event => { // When it finishes the requisition
+                    user.loadFromJSON(dataUser);
 
-            let obj = { users: [] }
+                    this.addLine(user);
 
-            try {
-                obj = JSON.parse(ajax.responseText); // Taking the JSON and converting it to object (already declared)
-            } catch (e) {
-                console.log("Error:", e)
-            }
-
-            obj.users.forEach(dataUser => { // Taking users from JSON object
-
-                let user = new User();
-
-                user.loadFromJSON(dataUser);
-
-                this.addLine(user);
-
+                });
             });
-        };
-
-        ajax.send(); // After all completed, send the requisition
-
     }
+
 
     addLine(dataUser) {
 
