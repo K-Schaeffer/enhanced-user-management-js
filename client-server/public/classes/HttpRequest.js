@@ -34,7 +34,7 @@ class HttpRequest {
 
             ajax.onerror = event => { // Just if something went wrong
                 reject(e);
-            }
+            };
 
             ajax.onload = event => { // When it finishes the requisition
 
@@ -44,16 +44,16 @@ class HttpRequest {
                     obj = JSON.parse(ajax.responseText); // Taking the JSON and converting it to object (already declared)
                 } catch (e) {
                     reject(e);
-                    console.log("Error:", e)
+                    console.error(e);
                 }
 
                 resolve(obj); // Calling the "resolve" of the promise
 
             };
 
-            ajax.send(); // After all completed, send the requisition
+            ajax.setRequestHeader('Content-Type', 'application/json');
 
-
+            ajax.send(JSON.stringify(params)); // After all completed, send the requisition
 
         });
 
